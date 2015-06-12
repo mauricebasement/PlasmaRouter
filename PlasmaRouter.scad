@@ -1,4 +1,4 @@
-$fn=10;
+$fn=50;
 //Modules
 module profile(lenght,center=false) {
     if (center==false)linear_extrude(height=lenght)import("profile.dxf");
@@ -46,7 +46,7 @@ module yRodHold() {
     }
     difference() {
         translate([0,34.5,0])cube([34,11,42],center=true);
-        translate([0,40,0])rotate([90,0,0]) {
+        translate([0,41,0])rotate([90,0,0]) {
             tr_xy(x=12,y=16)cylinder(r=1.6,h=14);    
             translate([0,-18])cylinder(r=6,h=14);
         }
@@ -85,7 +85,7 @@ module rodHold() {
     difference() {
         translate([-7.5,0,10])cube([25,40,20],center=true);
         tr_xy(x=10)cylinder(r=2.5,h=20);      
-        translate([0,0,12])rotate([0,90,0])cylinder(r=4,h=12,center=true);
+        translate([0,0,12])rotate([0,90,0])cylinder(r=4.1,h=12,center=true);
     }
 }
 module bearingOne() {
@@ -117,7 +117,7 @@ module assembly() {
     for(i=[0,1])mirror([i,0,0])translate([230,0])x();
     translate([0,0,49])y();
 }
-!assembly();
+assembly();
 //Cutting Aid
 module cuttingAid() {
     difference() {
