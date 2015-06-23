@@ -104,7 +104,7 @@ module connectionMotor(motor=true) {
         for(i=[25,70])translate([i,20])tr_xy(x=10)circle(r=2.5);
         if(motor==true)translate([25,61])motorCut();
         if(motor==false)translate([25,61]){
-            circle(r=7.5);
+            circle(r=6.5);
             tr_xy(x=9)circle(r=1.5);
         }
     }
@@ -112,7 +112,7 @@ module connectionMotor(motor=true) {
 module connectionCover() {
     difference() {
         circle(r=18.5);
-        circle(r=7.5);
+        circle(r=6.5);
         tr_xy(x=9)circle(r=1.5);
     }
 }
