@@ -103,21 +103,37 @@ module connectionMotor(motor=true) {
         }
         for(i=[25,70])translate([i,20])tr_xy(x=10)circle(r=2.5);
         if(motor==true)translate([25,61])motorCut();
-        if(motor==false)translate([25,61])circle(r=8);
+        if(motor==false)translate([25,61]){
+            circle(r=7.5);
+            tr_xy(x=9)circle(r=1.5);
+        }
     }
 }
 module connectionCover() {
     difference() {
-        circle(r=15);
-        circle(r=4);
+        circle(r=18.5);
+        circle(r=7.5);
+        tr_xy(x=9)circle(r=1.5);
     }
 }
 module assembly() {
     for(i=[0,1])mirror([0,i,0])translate([0,270])rotate([0,90,0])profile(500,true);
     for(i=[0,1])mirror([i,0,0])translate([230,0])x();
-    translate([0,0,49])y();
+    *translate([0,0,49])y();
 }
 assembly();
+module xRodHold(bottom=true,top=false) {
+    difference() {
+        square(40,center=true);
+        if(bottom==true)tr_xy(x=10)circle(r=2.5);
+        if(bottom==false){
+            tr_xy(x=10)circle(r=2.5);
+            translate([0,10])square([8,20],center=true);
+        }
+        if(top==true)translate([0,10])square([40,20],center=true);
+    }
+}
+!xRodHold();
 //Cutting Aid
 module cuttingAid() {
     difference() {
