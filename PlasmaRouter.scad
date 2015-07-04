@@ -134,7 +134,7 @@ module y() {
     offSet=230;
     for(i=[1,0])mirror([i,0,0])translate([offSet,0])rodHoldY();   
     for(i=[-1,1])translate([0,i*35,9])rotate([0,90,0])cylinder(r=4,h=470,center=true);
-    translate([0,0,50])extrude()carriage();
+    translate([0,0,15.5])extrude()carriage();
 }
 
 module assembly() {
