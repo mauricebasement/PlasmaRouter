@@ -33,6 +33,10 @@ module tr_xy(x,y=0) {
 module extrude(h=5) {
     linear_extrude(height=5)children();
 }
+module t_slot() {
+	translate([0,3.25])square([2.8,6.5],center=true);
+	translate([0,3.5])square([2.5+2.8,1.65],center=true);
+}
 //Parts
 module xRodHold(bottom=true,top=false) {
     difference() {
@@ -47,21 +51,19 @@ module xRodHold(bottom=true,top=false) {
 }
 module yRodHold(bottom=false,middle=false,top=false) {
     difference() {
-        square([40,100],center=true);
+        square([45,100],center=true);
         tr_xy(12,21)circle(r=2.5);
-        if(top==true)tr_xy(12,21)circle(r=4);
+        if(top==true)tr_xy(12,21)circle(r=5);
         tr_xy(12,45)circle(r=1.5);
         if(middle==true){
-            for(i=[0,1])mirror([0,i,0])translate([-3.5,35])square([33,8],center=true);
-            
+            for(i=[0,1])mirror([0,i,0])translate([-5.5,35])square([37,8],center=true);         
         }
     }
     if(middle==true)translate([0,56])difference() {
-                square([40,12],center=true);
-                translate([-5,0])square([2.5,7],center=true);
+                square([45,12],center=true);
+                translate([-10,0])square([2.5,7],center=true);
     }
-    for(i=[0,1])mirror([0,i,0])if(bottom==true)translate([23,44])difference() {
-                square([14,12],center=true);
+    for(i=[0,1])mirror([0,i,0])if(bottom==true)translate([30,40])difference() {                translate([-2,0])square([18,20],center=true);
                 square([7,2.5],center=true);
     }
 }
@@ -95,12 +97,17 @@ module bearingOne() {
 }
 module carriage() {
     difference(){
-        square([100,100],center=true);
+        square([120,100],center=true);
         bearingCut();
+        tr_xy(x=52.5,y=42.5){
+            tr_xy(x=0,y=7.5)square(5,center=true);
     }
 }
+module bearings() {
+    for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])translate([30,35])rotate([0,90,0])cylinder(r=7.5,h=24,center=true);
+}
 module bearingCut() {
-    projection(cut=true)translate([0,0,-2.5])for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])translate([30,35])rotate([0,90,0])cylinder(r=7.5,h=24,center=true);
+    projection(cut=true)translate([0,0,-2.5])bearings();
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])translate([30,35])tr_xy(x=9,y=10)square([6,2],center=true);
 }
 
@@ -134,7 +141,8 @@ module y() {
     offSet=230;
     for(i=[1,0])mirror([i,0,0])translate([offSet,0])rodHoldY();   
     for(i=[-1,1])translate([0,i*35,9])rotate([0,90,0])cylinder(r=4,h=470,center=true);
-    translate([0,0,15.5])extrude()carriage();
+    translate([0,0,11.5])!extrude()carriage();
+    translate([0,0,9])bearings();
 }
 
 module assembly() {
