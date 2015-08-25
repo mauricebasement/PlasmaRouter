@@ -49,23 +49,30 @@ module xRodHold(bottom=true,top=false) {
         if(top==true)translate([0,10])square([40,20],center=true);
     }
 }
-module yRodHold(bottom=false,middle=false,top=false) {
+module yRodHold(bottom=false,middle=false,top=false,cover=false) {
     difference() {
         square([45,100],center=true);
         tr_xy(12,21)circle(r=2.5);
-        if(top==true)tr_xy(12,21)circle(r=5);
+        if(top==true){
+            tr_xy(12,21)circle(r=5);
+            for(i=[-1,1])translate([0,35*i])square([30,5],center=true);
+            }
         tr_xy(12,45)circle(r=1.5);
         if(middle==true){
             for(i=[0,1])mirror([0,i,0])translate([-5.5,34])square([37,8],center=true);         
         }
     }
-    if(middle==true)translate([0,56])difference() {
+    *if(middle==true)translate([0,56])difference() {
                 square([45,12],center=true);
                 translate([-10,0])square([2.5,7],center=true);
     }
     for(i=[0,1])mirror([0,i,0])if(bottom==true)translate([30,40])difference() {
         translate([-2,0])square([18,20],center=true);
         square([7,2.5],center=true);
+    }
+    if(cover==true){
+        tr_xy(12,45)circle(r=1.5);
+        tr_xy(12,21)circle(r=5);
     }
 }
 module connectionMotor(motor=true) {
@@ -100,49 +107,9 @@ module carriageSheet() {
     difference(){
         square([120,100],center=true);
         bearingCut();
-        tr_xy(x=52.5,y=32.5){
-            tr_xy(x=0,y=7.5)square(5,center=true);
-            circle(r=1.5);
-        }
-        translate([0,-30])circle(r=15);
-        for(i=[-50,50])translate([i,47.5])square([10,5],center=true);
-        translate([0,50-5])rotate([0,0,180])tSlot();
-        translate([0,50-2.5])square([20,5],center=true);
+        circle(r=15);
+        for(i=[-1,1])translate([55*i,44])square([2.5,7],center=true);
     }
-}
-module motorHold() {
-    difference(){
-        square([120,43],center=true);
-        motorCut();
-        for(i=[-1,1])translate([i*30,-43/2+6])circle(r=2.5);
-        for(i=[-1,1])translate([i*52.5,-1.5]){
-            tr_xy(x=0,y=7.5)square(5,center=true);
-            circle(r=1.5);
-        }
-    }
-    for(i=[-50,50])translate([i,-43/2-2.5])square([10,5.01],center=true);
-    translate([0,-43/2-2.5])difference(){
-        square([20,5.01],center=true);
-        circle(r=1.5);
-    }
-    difference(){
-        translate([0,-34])square([120,15],center=true);
-        for(i=[-1,1])translate([i*30,-43/2-5-7])circle(r=2.5);
-    }
-}
-module angle() {
-    y=22.5;
-    difference() {
-        translate([2.5,0])square([95,40],center=true);
-        for(i=[-1,1])translate([i*32.5,y-2.5]){
-            rotate([0,0,180])tSlot();
-        }
-        translate([-45,0])rotate([0,0,-90])tSlot();
-    }
-    for(i=[-1,1])translate([i*32.5,y-.1]){
-            rotate([0,0,90])tr_xy(x=0,y=7.5)square([5,5.1],center=true);
-    }
-    translate([-47.5,0])tr_xy(x=0,y=7.5)square([5,5.1],center=true);
 }
 module bearings() {
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])
@@ -153,6 +120,18 @@ module bearingCut() {
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])
         translate([35,34])tr_xy(x=9,y=10)square([6,2],center=true);
 }
+module motorHold(motor=false,belt=false) {
+    difference() {
+        square(45,center=true);
+        if(motor==true)motorCut();
+        if(belt==true)circle(r=2.5);
+    }
+        for(i=[-1,1])translate([0,i*50/2])square([30,5],center=true);
+}
+
+motorHold();
+motorHold(belt=true);
+motorHold(motor=true);
 //Assemblies
 module rodHoldX() {
     rotate([0,0,-90]){
@@ -166,6 +145,8 @@ module rodHoldY() {
     extrude()yRodHold(bottom=true);
     translate([0,0,5])extrude()yRodHold(middle=true);
     translate([0,0,13])extrude()yRodHold(top=true);
+    translate([0,0,22])extrude()!yRodHold(cover=true,top=true);
+    
 }
 module x() {
     rotate([90,0,0])profile(500,true);
@@ -189,8 +170,6 @@ module y() {
 module carriage() {
     translate([0,0,11.5]){
         extrude()carriageSheet();
-        for(i=[-1,1])translate([i*52.5-2.5,0,25])rotate([0,90,0])rotate([0,0,-90])extrude()angle();
-        translate([0,50,26.5])rotate([90,0,0])extrude()motorHold();
     }
 }
 module assembly() {
