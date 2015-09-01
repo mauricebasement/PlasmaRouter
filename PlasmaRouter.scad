@@ -49,7 +49,7 @@ module xRodHold(bottom=true,top=false) {
         if(top==true)translate([0,10])square([40,20],center=true);
     }
 }
-module yRodHold(bottom=false,middle=false,top=false,cover=false) {
+module yRodHold(bottom=false,middle=false,top=false,cover=false,slot=false) {
     difference() {
         square([45,100],center=true);
         tr_xy(12,21)circle(r=2.5);
@@ -61,7 +61,9 @@ module yRodHold(bottom=false,middle=false,top=false,cover=false) {
         if(middle==true){
             for(i=[0,1])mirror([0,i,0])translate([-5.5,34])square([37,8],center=true);         
         }
+        if(slot==true)translate([22.5,0])rotate([0,0,90])tSlot();
     }
+    if(slot==true)for(i=[-1,1])translate([25,i*30])square(5,center=true);
     *if(middle==true)translate([0,56])difference() {
                 square([45,12],center=true);
                 translate([-10,0])square([2.5,7],center=true);
@@ -128,7 +130,14 @@ module motorHold(motor=false,belt=false) {
     }
         for(i=[-1,1])translate([0,i*50/2])square([30,5],center=true);
 }
-
+module side() {
+    difference() {
+        square([75,55],center=true);
+        tr_xy(x=30,y=25)square(5,center=true);
+        for(i=[-1,1])translate([0,i*25])circle(r=1.5);
+    }
+}
+!side();
 motorHold();
 motorHold(belt=true);
 motorHold(motor=true);
@@ -144,8 +153,8 @@ module rodHoldX() {
 module rodHoldY() {
     extrude()yRodHold(bottom=true);
     translate([0,0,5])extrude()yRodHold(middle=true);
-    translate([0,0,13])extrude()yRodHold(top=true);
-    translate([0,0,22])extrude()!yRodHold(cover=true,top=true);
+    translate([0,0,13])extrude()yRodHold(top=true,slot=true);
+    translate([0,0,22])extrude()yRodHold(cover=true,top=true,slot=true);
     
 }
 module x() {

@@ -1,10 +1,4 @@
-2*connectionRodHold
-2*connectionCover
-2*yRodHoldBottom
-2*yRodHoldMiddle
+2*yRodHoldCover
 2*yRodHoldTop
-1*motorHold
-1*motorHoldBelt
-2*blankHold
-2*cover
+2*side
 1*carriageSheet
