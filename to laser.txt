@@ -2,3 +2,5 @@
 2*yRodHoldTop
 2*side
 1*carriageSheet
+2*angle
+2*carriageFront

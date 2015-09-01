@@ -61,9 +61,10 @@ module yRodHold(bottom=false,middle=false,top=false,cover=false,slot=false) {
         if(middle==true){
             for(i=[0,1])mirror([0,i,0])translate([-5.5,34])square([37,8],center=true);         
         }
-        if(slot==true)translate([22.5,0])rotate([0,0,90])tSlot();
+        if(slot==true)for(i=[-1,1])translate([i*22.5,0])rotate([0,0,i*90])tSlot();
+
     }
-    if(slot==true)for(i=[-1,1])translate([25,i*30])square(5,center=true);
+    if(slot==true)tr_xy(x=25,y=30)square(5,center=true);
     *if(middle==true)translate([0,56])difference() {
                 square([45,12],center=true);
                 translate([-10,0])square([2.5,7],center=true);
@@ -106,21 +107,60 @@ module bearingOne() {
     }
 }
 module carriageSheet() {
+    a=37;
+    b=22.5;
     difference(){
-        square([120,100],center=true);
+        square([90,100],center=true);
         bearingCut();
-        circle(r=15);
-        for(i=[-1,1])translate([55*i,44])square([2.5,7],center=true);
+        square(30,center=true);
+        for(i=[-1,1])translate([i*a,b])cut();
+        for(i=[-1,1])translate([i*12.5,17.5])square(5,center=true);
     }
+}
+module carriageFront() {
+    difference() {
+        square([90,50],center=true);
+        tr_xy(x=12.5,y=17.5)square(5,center=true);
+        for(i=[-1,1])translate([i*37,-2.5])cut();
+    }
+    for(i=[-1,1])translate([i*12.5,27.5])square(5,center=true);   
+    translate([0,55])difference() {
+        square([30,50],center=true);
+        tr_xy(x=12.5,y=15)square(5,center=true);
+    }
+}
+module angle() {
+    difference() {
+        union() {
+            square([17,30]);
+            square([30,15]);
+        }
+        translate([17.5,-0.01])tSlot();
+        translate([0,12.5])rotate([0,0,-90])tSlot();
+        translate([14.5-2.5/2,24])square([2.5,7],center=true);
+    }
+    translate([-2.5,2.5])add();
+    translate([7.5,-2.49])rotate([0,0,-90])add();    
+}
+module add() {
+    square(5,center=true);
+    translate([0,20])square(5,center=true);
+}
+carriageFront();
+angle();
+module cut() {
+    square(5,center=true);
+    translate([0,10])circle(r=1.5);
+    translate([0,20])square(5,center=true);
 }
 module bearings() {
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])
-        translate([35,34])rotate([0,90,0])cylinder(r=7.5,h=24,center=true);
+        translate([20,34])rotate([0,90,0])cylinder(r=7.5,h=24.5,center=true);
 }
 module bearingCut() {
-    projection(cut=true)translate([0,0,-2.5])bearings();
+    projection(cut=true)translate([0,0,-5])bearings();
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])
-        translate([35,34])tr_xy(x=9,y=10)square([6,2],center=true);
+        translate([20,34])tr_xy(x=9,y=10)square([6,2],center=true);
 }
 module motorHold(motor=false,belt=false) {
     difference() {
@@ -137,10 +177,12 @@ module side() {
         for(i=[-1,1])translate([0,i*25])circle(r=1.5);
     }
 }
-!side();
+
+side();
 motorHold();
 motorHold(belt=true);
 motorHold(motor=true);
+
 //Assemblies
 module rodHoldX() {
     rotate([0,0,-90]){
@@ -178,7 +220,7 @@ module y() {
 }
 module carriage() {
     translate([0,0,11.5]){
-        extrude()carriageSheet();
+        extrude()!carriageSheet();
     }
 }
 module assembly() {
