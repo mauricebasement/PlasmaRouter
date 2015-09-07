@@ -49,10 +49,36 @@ module xRodHold(bottom=true,top=false) {
         if(top==true)translate([0,10])square([40,20],center=true);
     }
 }
-module yRodHold(bottom=false,middle=false,top=false) {
+module yRodHold(bottom=false,middle=false,top=false,cover=false,slot=false) {
     difference() {
         square([45,100],center=true);
         tr_xy(12,21)circle(r=2.5);
+<<<<<<< HEAD
+=======
+        if(top==true){
+            tr_xy(12,21)circle(r=5);
+            for(i=[-1,1])translate([0,35*i])square([30,5],center=true);
+            }
+        tr_xy(12,45)circle(r=1.5);
+        if(middle==true){
+            for(i=[0,1])mirror([0,i,0])translate([-5.5,34])square([37,8],center=true);         
+        }
+        if(slot==true)for(i=[-1,1])translate([i*22.5,0])rotate([0,0,i*90])tSlot();
+
+    }
+    if(slot==true)tr_xy(x=25,y=30)square(5,center=true);
+    *if(middle==true)translate([0,56])difference() {
+                square([45,12],center=true);
+                translate([-10,0])square([2.5,7],center=true);
+    }
+    for(i=[0,1])mirror([0,i,0])if(bottom==true)translate([30,40])difference() {
+        translate([-2,0])square([18,20],center=true);
+        square([7,2.5],center=true);
+>>>>>>> 34d2eae9d5ac06169386bcd21cd32985911354f1
+    }
+    if(cover==true){
+        tr_xy(12,45)circle(r=1.5);
+        tr_xy(12,21)circle(r=5);
     }
 }
 !yRodHold();
@@ -85,28 +111,85 @@ module bearingOne() {
     }
 }
 module carriageSheet() {
+    a=37;
+    b=22.5;
     difference(){
-        square([120,100],center=true);
+        square([90,100],center=true);
         bearingCut();
-        tr_xy(x=52.5,y=32.5){
-            tr_xy(x=0,y=7.5)square(5,center=true);
-            circle(r=1.5);
-        }
-        translate([0,-30])circle(r=15);
-        for(i=[-50,50])translate([i,47.5])square([10,5],center=true);
-        translate([0,50-5])rotate([0,0,180])tSlot();
-        translate([0,50-2.5])square([20,5],center=true);
+        square(30,center=true);
+        for(i=[-1,1])translate([i*a,b])cut();
+        for(i=[-1,1])translate([i*12.5,17.5])square(5,center=true);
     }
 }
+<<<<<<< HEAD
+=======
+module carriageFront() {
+    difference() {
+        square([90,50],center=true);
+        tr_xy(x=12.5,y=17.5)square(5,center=true);
+        for(i=[-1,1])translate([i*37,-2.5])cut();
+    }
+    for(i=[-1,1])translate([i*12.5,27.5])square(5,center=true);   
+    translate([0,55])difference() {
+        square([30,50],center=true);
+        tr_xy(x=12.5,y=15)square(5,center=true);
+    }
+}
+module angle() {
+    difference() {
+        union() {
+            square([17,30]);
+            square([30,15]);
+        }
+        translate([17.5,-0.01])tSlot();
+        translate([0,12.5])rotate([0,0,-90])tSlot();
+        translate([14.5-2.5/2,24])square([2.5,7],center=true);
+    }
+    translate([-2.5,2.5])add();
+    translate([7.5,-2.49])rotate([0,0,-90])add();    
+}
+module add() {
+    square(5,center=true);
+    translate([0,20])square(5,center=true);
+}
+carriageFront();
+angle();
+module cut() {
+    square(5,center=true);
+    translate([0,10])circle(r=1.5);
+    translate([0,20])square(5,center=true);
+}
+>>>>>>> 34d2eae9d5ac06169386bcd21cd32985911354f1
 module bearings() {
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])
-        translate([35,34])rotate([0,90,0])cylinder(r=7.5,h=24,center=true);
+        translate([20,34])rotate([0,90,0])cylinder(r=7.5,h=24.5,center=true);
 }
 module bearingCut() {
-    projection(cut=true)translate([0,0,-2.5])bearings();
+    projection(cut=true)translate([0,0,-5])bearings();
     for(j=[1,0])mirror([j,0,0])for(i=[1,0])mirror([0,i,0])
-        translate([35,34])tr_xy(x=9,y=10)square([6,2],center=true);
+        translate([20,34])tr_xy(x=9,y=10)square([6,2],center=true);
 }
+module motorHold(motor=false,belt=false) {
+    difference() {
+        square(45,center=true);
+        if(motor==true)motorCut();
+        if(belt==true)circle(r=2.5);
+    }
+        for(i=[-1,1])translate([0,i*50/2])square([30,5],center=true);
+}
+module side() {
+    difference() {
+        square([75,55],center=true);
+        tr_xy(x=30,y=25)square(5,center=true);
+        for(i=[-1,1])translate([0,i*25])circle(r=1.5);
+    }
+}
+
+side();
+motorHold();
+motorHold(belt=true);
+motorHold(motor=true);
+
 //Assemblies
 module rodHoldX() {
     rotate([0,0,-90]){
@@ -117,6 +200,14 @@ module rodHoldX() {
     }
 }
 module rodHoldY() {
+<<<<<<< HEAD
+=======
+    extrude()yRodHold(bottom=true);
+    translate([0,0,5])extrude()yRodHold(middle=true);
+    translate([0,0,13])extrude()yRodHold(top=true,slot=true);
+    translate([0,0,22])extrude()yRodHold(cover=true,top=true,slot=true);
+    
+>>>>>>> 34d2eae9d5ac06169386bcd21cd32985911354f1
 }
 module x() {
     rotate([90,0,0])profile(500,true);
@@ -139,9 +230,7 @@ module y() {
 }
 module carriage() {
     translate([0,0,11.5]){
-        extrude()carriageSheet();
-        for(i=[-1,1])translate([i*52.5-2.5,0,25])rotate([0,90,0])rotate([0,0,-90])extrude()angle();
-        translate([0,50,26.5])rotate([90,0,0])extrude()motorHold();
+        extrude()!carriageSheet();
     }
 }
 module assembly() {
