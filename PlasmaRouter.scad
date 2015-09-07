@@ -184,7 +184,22 @@ module side() {
         for(i=[-1,1])translate([0,i*25])circle(r=1.5);
     }
 }
+module feet() {
+    difference() {
+        translate([25,0])square([90,40],center=true);
+        tr_xy(x=10)circle(r=2.5);
+    }
+}
+module protection() {
+    difference(){
+        square([90,100],center=true);
+        circle(r=7.75);
+    }
+}
 
+
+feet();
+protection();
 side();
 motorHold();
 motorHold(belt=true);
